@@ -4,6 +4,7 @@ import datetime
 import requests
 from bs4 import BeautifulSoup as bs
 from requests.models import Response
+from time import sleep
 
 bot = commands.Bot("\\")
 
@@ -83,7 +84,12 @@ async def talk(ctx):
 @bot.command(name="limpar")
 async def clean(ctx, lim):
     lim = int(lim)
+    if lim > 300:
+        lim = 300
     await ctx.channel.purge(limit=lim)
+    await ctx.send(f"Foram apagadas {lim} mensagens!")
+    sleep(3)
+    await ctx.channel.purge(limit=1)
 
 @tasks.loop(hours=1)
 async def current_time():
