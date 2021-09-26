@@ -80,6 +80,11 @@ async def talk(ctx):
     except discord.errors.Forbidden:
         await ctx.send(f"@{ctx.author.name} não podemos conversar ;-; Habilite receber mensagens de qualquer um do servidor (Opções > Privacidade)")
 
+@bot.command(name="limpar")
+async def clean(ctx, lim):
+    lim = int(lim)
+    await ctx.channel.purge(limit=lim)
+
 @tasks.loop(hours=1)
 async def current_time():
     now = datetime.datetime.now()
