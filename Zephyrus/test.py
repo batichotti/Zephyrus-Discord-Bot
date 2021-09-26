@@ -11,6 +11,8 @@ bot = commands.Bot("\\")
 @bot.event
 async def on_ready():
     print(f'Estamos conectados como {bot.user}')
+    now = datetime.datetime.now()
+    print(f'Conexão iniciada: {now.strftime("%d/%m/%Y às %H:%M:%S")}')
     print('>' + '-'*34 + '<')
     current_time.start()
 
@@ -18,12 +20,6 @@ async def on_ready():
 async def on_message(message):
     if message.author == bot.user:
         return
-    if "Gojo" in message.content:
-        await message.channel.send(f"Por favor, @{message.author.name}, não diga o nome de deus em vão!")
-    if "Maki" in message.content:
-        await message.channel.send(f"Falou o nome da Mak*? Eu tenho que apagar isso!")
-        await message.delete()
-
     await bot.process_commands(message)
 
 @bot.command(name="oi")
@@ -83,13 +79,20 @@ async def talk(ctx):
 
 @bot.command(name="limpar")
 async def clean(ctx, lim):
-    lim = int(lim)
-    if lim > 300:
-        lim = 300
-    await ctx.channel.purge(limit=lim)
-    await ctx.send(f"Foram apagadas {lim} mensagens!")
-    sleep(3)
-    await ctx.channel.purge(limit=1)
+    try:
+        lim = int(lim) + 1
+        if lim > 301:
+            lim = 301
+        await ctx.channel.purge(limit=lim)
+        await ctx.send(f"Foram apagadas {lim-1} mensagens!")
+        sleep(3)
+        await ctx.channel.purge(limit=1)
+    except Exception as e:
+        await ctx.send("Ops... Erro")
+
+@bot.command()
+async def test(ctx):
+    await ctx.send(f"@{ctx.author.mention}")
 
 @tasks.loop(hours=1)
 async def current_time():
