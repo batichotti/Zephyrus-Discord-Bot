@@ -73,11 +73,20 @@ async def euro(ctx):
         await ctx.send("Ops... Erro detectado!")
         print(e)
 
+@bot.command(name="conversa")
+async def talk(ctx):
+    try:
+        await ctx.author.send("Olá!")
+    except discord.errors.Forbidden:
+        await ctx.send(f"@{ctx.author.name} não podemos conversar ;-; Habilite receber mensagens de qualquer um do servidor (Opções > Privacidade)")
+
 @tasks.loop(hours=1)
 async def current_time():
     now = datetime.datetime.now()
     now = now.strftime("%d/%m/%Y às %H:%M:%S")
-    channel = bot.get_channel(891426585419325470)
-    await channel.send(f"Data atual: {now}")
+    channels = [891426585419325470]
+    for channel in channels:
+        channel = bot.get_channel(channel)
+        await channel.send(f"Data atual: {now}")
 
 bot.run('ODkxMzUxMTQxNjk3MzUxNzQw.YU9FcA.fSckrOmA0fl2-6aZwjz5h2W8DvE')
