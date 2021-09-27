@@ -3,7 +3,6 @@ from discord.ext import commands, tasks
 import datetime
 import requests
 from bs4 import BeautifulSoup as bs
-from requests.models import Response
 from time import sleep
 
 bot = commands.Bot("\\")
