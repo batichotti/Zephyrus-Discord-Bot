@@ -30,9 +30,13 @@ async def send_hello(ctx):
 
 @bot.command(name="calcular")
 async def calculate_expression(ctx, *expression):
-    expression = ''.join(expression)
-    response = eval(expression)
-    await ctx.send(f"A resposta é {response}")
+    try:
+        expression = ''.join(expression)
+        response = eval(expression)
+        await ctx.send(f"A resposta é {response}")
+    except Exception as e:
+        await bot.send("Ops... Erro detectado!")
+        print(e)
 
 @bot.command(name="crypto")
 async def binance(ctx, coin, base):
@@ -97,7 +101,7 @@ async def clean(ctx, lim):
         await ctx.send("Ops... Erro")
         print(e)
 
-@tasks.loop(hours=1)
+@tasks.loop(hours=0.5)
 async def current_time():
     now = datetime.datetime.now()
     now = now.strftime("%d/%m/%Y às %H:%M:%S")
