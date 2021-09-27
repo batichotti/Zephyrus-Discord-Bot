@@ -83,12 +83,19 @@ async def clean(ctx, lim):
         lim = int(lim) + 1
         if lim > 301:
             lim = 301
+        elif lim == 0:
+            await bot.send(f"Impossível apagar uma quantia nula de mensagens, {ctx.author.mention}")
+            return
+        elif lim < 0:
+            await bot.send(f"Impossível apagar uma quantia negativa de mensagens, {ctx.author.mention}"),
+            return
         await ctx.channel.purge(limit=lim)
         await ctx.send(f"Foram apagadas {lim-1} mensagens!")
-        sleep(3)
+        sleep(1.5)
         await ctx.channel.purge(limit=1)
     except Exception as e:
         await ctx.send("Ops... Erro")
+        print(e)
 
 @tasks.loop(hours=1)
 async def current_time():
