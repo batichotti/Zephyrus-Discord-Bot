@@ -24,7 +24,7 @@ async def on_message(message):
 
 @bot.command(name="oi")
 async def send_hello(ctx):
-    name = ctx.author.name
+    name = ctx.author.mention
     response = f"Olá, {name}!"
     await ctx.send(response)
 
@@ -75,7 +75,7 @@ async def talk(ctx):
     try:
         await ctx.author.send("Olá!")
     except discord.errors.Forbidden:
-        await ctx.send(f"@{ctx.author.name} não podemos conversar ;-; Habilite receber mensagens de qualquer um do servidor (Opções > Privacidade)")
+        await ctx.send(f"@{ctx.author.mention} não podemos conversar ;-; Habilite receber mensagens de qualquer um do servidor (Opções > Privacidade)")
 
 @bot.command(name="limpar")
 async def clean(ctx, lim):
@@ -89,10 +89,6 @@ async def clean(ctx, lim):
         await ctx.channel.purge(limit=1)
     except Exception as e:
         await ctx.send("Ops... Erro")
-
-@bot.command()
-async def test(ctx):
-    await ctx.send(f"@{ctx.author.mention}")
 
 @tasks.loop(hours=1)
 async def current_time():
