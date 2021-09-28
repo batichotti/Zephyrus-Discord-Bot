@@ -21,6 +21,13 @@ async def on_message(message):
         return
     await bot.process_commands(message)
 
+@bot.event
+async def on_reaction_add(reaction, user):
+    print(reaction.emoji)
+    if reaction.emoji == "":
+        role = user.guild.get_role()
+        await user.add_roles()
+
 @bot.command(name="oi")
 async def send_hello(ctx):
     name = ctx.author.mention
