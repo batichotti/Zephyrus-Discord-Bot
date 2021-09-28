@@ -107,6 +107,27 @@ async def clean(ctx, lim):
         await ctx.send("Ops... Erro")
         print(e)
 
+@bot.command(name="foto")
+async def get_random_image(ctx):
+    url_image = "https://picsum.photos/1920/1080"
+    embed = discord.Embed(
+        title = "Resultado da busca de imagem",
+        description = "PS: A busca é totalmente aleatória",
+        color = 0x0000FF
+    )
+
+    embed.set_author(name=bot.user.name, icon_url = bot.user.avatar_url)
+    embed.set_footer(text = f"By: {bot.user.name}", icon_url = bot.user.avatar_url)
+
+    embed.add_field(name="API", value="foi utilizada a API do https://picsum.photos/")
+    embed.add_field(name="Parâmetros", value="{largura}/{altura}")
+
+    embed.add_field(name="Exemplo:", value=url_image, inline=False)
+
+    embed.set_image(url=url_image)
+
+    await ctx.send(embed=embed)
+
 @tasks.loop(hours=0.5)
 async def current_time():
     now = datetime.datetime.now()
