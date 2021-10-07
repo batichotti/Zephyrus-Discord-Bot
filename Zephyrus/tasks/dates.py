@@ -10,7 +10,7 @@ class Dates(commands.Cog):
     async def on_ready(self):
         self.current_time.start()
 
-    @tasks.Cog.loop(hours=0.5)
+    @tasks.loop(hours=1)
     async def current_time(self):
         now = datetime.datetime.now()
         now = now.strftime("%d/%m/%Y às %H:%M:%S")

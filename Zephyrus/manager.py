@@ -9,7 +9,7 @@ class Manager(commands.Cog):
     
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'Estamos conectados como {bot.user}')
+        print(f'Estamos conectados como {self.bot.user}')
         now = datetime.datetime.now()
         print(f'Conexão iniciada: {now.strftime("%d/%m/%Y às %H:%M:%S")}')
         print('>' + '-'*34 + '<')
