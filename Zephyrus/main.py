@@ -1,7 +1,10 @@
 import discord
 from discord.ext import commands, tasks
+from discord.ext.commands.errors import MissingRequiredArgument, CommandNotFound
 import datetime
 import requests
+import os
+from decouple import config
 from bs4 import BeautifulSoup as bs
 from time import sleep
 
@@ -21,20 +24,27 @@ async def on_message(message):
         return
     await bot.process_commands(message)
 
-#@bot.event
-#async def on_reaction_add(reaction, user):
-#    print(reaction.emoji)
-#    if reaction.emoji == "":
-#        role = user.guild.get_role()
-#       await user.add_roles()
+@bot.event
+async def on_member_join(user):
+    welcome_channel = user.get_channel(862727618814279680)
+    
 
-@bot.command(name="oi")
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, MissingRequiredArgument):
+        await ctx.send("Favor enviar todos os Argumentos. Digite \\help para ver os parâmetros de cada comando")
+    elif isinstance(error, CommandNotFound):
+        await ctx.send("O comando não existe.  Digite \\help para ver todos os comandos")
+    else:
+        raise error
+
+@bot.command(name="oi", help="Envia uma saudação (Não requer argumentos)")
 async def send_hello(ctx):
     name = ctx.author.mention
     response = f"Olá, {name}!"
     await ctx.send(response)
 
-@bot.command(name="calcular")
+@bot.command(name="calcular", help="Calcula uma expressão. Argumentos: Expressão")
 async def calculate_expression(ctx, *expression):
     try:
         expression = ''.join(expression)
@@ -44,7 +54,7 @@ async def calculate_expression(ctx, *expression):
         await bot.send("Ops... Erro detectado!")
         print(e)
 
-@bot.command(name="crypto")
+@bot.command(name="crypto", help="Verifica o preço de um par envolvendo uma cryptomoeda na binance. Argumentos: moeda, base")
 async def binance(ctx, coin, base):
     try:
         response = requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={coin.upper()}{base.upper()}")
@@ -58,7 +68,7 @@ async def binance(ctx, coin, base):
         await ctx.send("Ops... Erro detectado!")
         print(e)
 
-@bot.command(name="dólar")
+@bot.command(name="dólar", help="Verifica a cotação atual do Dólar em reais. (Não requer argumentos)")
 async def dollar(ctx):
     try:
         url = requests.get('https://www.remessaonline.com.br/cotacao/cotacao-dolar')
@@ -69,7 +79,7 @@ async def dollar(ctx):
         await ctx.send("Ops... Erro detectado!")
         print(e)
 
-@bot.command()
+@bot.command(help="Verifica a cotação atual do Euro em reais. (Não requer argumentos)")
 async def euro(ctx):
     try:
         url = requests.get('https://www.remessaonline.com.br/cotacao/cotacao-euro')
@@ -80,14 +90,14 @@ async def euro(ctx):
         await ctx.send("Ops... Erro detectado!")
         print(e)
 
-@bot.command(name="conversa")
+@bot.command(name="conversa", help="Manda uma mensagem no privado de quem utilizou o comando. (Não requer argumentos)")
 async def talk(ctx):
     try:
-        await ctx.author.send("Olá!")
+        await ctx.author.send("Olá! Se inscreva no canal do meu dev: https://www.youtube.com/channel/UChMVeWXTvteLDSMjxlPGmCA")
     except discord.errors.Forbidden:
         await ctx.send(f"@{ctx.author.mention} não podemos conversar ;-; Habilite receber mensagens de qualquer um do servidor (Opções > Privacidade)")
 
-@bot.command(name="limpar")
+@bot.command(name="limpar", help="Limpa mensagens enviadas no chat. Argumentos: Quantia de mensagens a serem deletadas (limite = 300)")
 async def clean(ctx, lim):
     try:
         lim = int(lim) + 1
@@ -107,7 +117,7 @@ async def clean(ctx, lim):
         await ctx.send("Ops... Erro")
         print(e)
 
-@bot.command(name="foto")
+@bot.command(name="foto", help="Mostra uma imagem aleatória. (Não requer argumentos)")
 async def get_random_image(ctx):
     url_image = "https://picsum.photos/1920/1080"
     embed = discord.Embed(
@@ -137,4 +147,5 @@ async def current_time():
         channel = bot.get_channel(channel)
         await channel.send(f"Data atual: {now}")
 
-bot.run('ODkxMzUxMTQxNjk3MzUxNzQw.YU9FcA.fSckrOmA0fl2-6aZwjz5h2W8DvE')
+TOKEN = config("TOKEN")
+bot.run(TOKEN)
