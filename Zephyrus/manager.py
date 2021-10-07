@@ -18,7 +18,6 @@ class Manager(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
-        await self.bot.process_commands(message)
         
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
