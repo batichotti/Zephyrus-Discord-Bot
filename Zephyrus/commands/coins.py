@@ -1,5 +1,6 @@
 from discord.ext import commands
-
+import requests
+from bs4 import BeautifulSoup as bs
 
 class Coins(commands.Cog):
     """ Works with Coins and Cryptocurrency Values """
@@ -7,7 +8,7 @@ class Coins(commands.Cog):
         self.bot = bot
     
     @commands.command(name="crypto", help="Verifica o preço de um par envolvendo uma cryptomoeda na binance. Argumentos: moeda, base")
-    async def binance(ctx, coin, base):
+    async def binance(self, ctx, coin, base):
         try:
             response = requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={coin.upper()}{base.upper()}")
             data = response.json()
@@ -21,7 +22,7 @@ class Coins(commands.Cog):
             print(e)
 
     @commands.command(name="dólar", help="Verifica a cotação atual do Dólar em reais. (Não requer argumentos)")
-    async def dollar(ctx):
+    async def dollar(self, ctx):
         try:
             url = requests.get('https://www.remessaonline.com.br/cotacao/cotacao-dolar')
             soup = bs(url.text, 'html.parser')
@@ -31,8 +32,8 @@ class Coins(commands.Cog):
             await ctx.send("Ops... Erro detectado!")
             print(e)
 
-    @bot.command(help="Verifica a cotação atual do Euro em reais. (Não requer argumentos)")
-    async def euro(ctx):
+    @commands.command(help="Verifica a cotação atual do Euro em reais. (Não requer argumentos)")
+    async def euro(self, ctx):
         try:
             url = requests.get('https://www.remessaonline.com.br/cotacao/cotacao-euro')
             soup = bs(url.text, 'html.parser')
