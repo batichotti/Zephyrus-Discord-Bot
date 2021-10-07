@@ -16,5 +16,5 @@ def load_cogs(bot):
 
 load_cogs(bot)
 
-TOKEN = config("TOKEN")
+TOKEN = config("TOKEN") #read a .env archive with the bot's token
 bot.run(TOKEN)
