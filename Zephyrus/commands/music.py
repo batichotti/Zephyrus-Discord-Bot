@@ -32,7 +32,7 @@ class music(commands.Cog):
         }
         self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
 
-        self.vc = ""
+        self.vc = discord.FFmpegPCMAudio(executable="C:/path/ffmpeg.exe", source="mp3.mp3")
 
      #searching the item on youtube
     def search_yt(self, item):
@@ -104,7 +104,7 @@ class music(commands.Cog):
             self.music_queue.clear()
             await self.vc.disconnect()
 
-    @commands.command(name="m_help",alisases=['ajuda'],help="Comando de ajuda com os comandos de música")
+    @commands.command(name="m_help",alisases=['m_ajuda'],help="Comando de ajuda com os comandos de música")
     async def help(self,ctx):
         helptxt = ''
         for command in self.client.commands:
@@ -149,7 +149,7 @@ class music(commands.Cog):
 
                 embedvc = discord.Embed(
                     colour= 32768,#green
-                    description = f"{txt}\n\n[Crie seu próprio Bot de Música](https://youtu.be/YGx0xNHzjgE)"
+                    description = f"{txt}\n\n[Se inscreva no meu canal](https://www.youtube.com/channel/UChMVeWXTvteLDSMjxlPGmCA)"
                 )
                 await ctx.send(embed=embedvc)
                 for song in songs:

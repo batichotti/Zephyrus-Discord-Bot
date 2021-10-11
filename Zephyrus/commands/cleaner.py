@@ -6,7 +6,7 @@ class Cleaner(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name="limpar", help="Limpa mensagens enviadas no chat. Argumentos: Quantia de mensagens a serem deletadas (limite = 300)")
+    @commands.command(name="limpar", help="Limpa mensagens enviadas no chat. Argumentos: Quantia de mensagens a serem deletadas (limite = 300)", aliases = ['cls', 'clear'])
     async def clean(self, ctx, lim):
         try:
             lim = int(lim) + 1
