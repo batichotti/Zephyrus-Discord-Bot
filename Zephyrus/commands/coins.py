@@ -29,7 +29,7 @@ class Coins(commands.Cog):
             await ctx.send("Ops... Erro detectado!")
             print(e)
 
-    @commands.command(name="dólar", help="Verifica a cotação atual do Dólar em reais. (Não requer argumentos), aliases = ['Dólar', 'Dolar', 'Dollar', 'dolar', 'dollar']")
+    @commands.command(name="dólar", help="Verifica a cotação atual do Dólar em reais. (Não requer argumentos)", aliases = ['Dólar', 'Dolar', 'Dollar', 'dolar', 'dollar'])
     async def dollar(self, ctx):
         try:
             dolar = self.get_price('USD')
@@ -38,7 +38,7 @@ class Coins(commands.Cog):
             await ctx.send("Ops... Erro detectado!")
             print(e)
 
-    @commands.command(name="euro", help="Verifica a cotação atual do Euro em reais. (Não requer argumentos), aliases = ['Euro']")
+    @commands.command(name="euro", help="Verifica a cotação atual do Euro em reais. (Não requer argumentos)", aliases = ['Euro'])
     async def euro(self, ctx):
         try:
             euro = self.get_price('EUR')
