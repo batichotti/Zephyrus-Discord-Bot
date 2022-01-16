@@ -1,11 +1,19 @@
 from discord.ext import commands
 import requests
-from bs4 import BeautifulSoup as bs
 
 class Coins(commands.Cog):
     """ Works with Coins and Cryptocurrency Values """
     def __init__(self, bot):
         self.bot = bot
+
+    def get_price(self, coin_code):
+        link = f"https://economia.awesomeapi.com.br/last/{coin_code}-BRL"
+        request = requests.get(link)
+        dic_request = request.json()
+        coin_price = dic_request[f"{coin_code}BRL"]["bid"]
+        coin_price_float = float(coin_price)
+        coin_price = str(round(coin_price_float, 2)).replace('.', ',')
+        return coin_price
     
     @commands.command(name="crypto", help="Verifica o preço de um par envolvendo uma cryptomoeda na binance. Argumentos: moeda, base")
     async def binance(self, ctx, coin, base):
@@ -21,24 +29,20 @@ class Coins(commands.Cog):
             await ctx.send("Ops... Erro detectado!")
             print(e)
 
-    @commands.command(name="dólar", help="Verifica a cotação atual do Dólar em reais. (Não requer argumentos)")
+    @commands.command(name="dólar", help="Verifica a cotação atual do Dólar em reais. (Não requer argumentos), aliases = ['Dólar', 'Dolar', 'Dollar', 'dolar', 'dollar']")
     async def dollar(self, ctx):
         try:
-            url = requests.get('https://www.remessaonline.com.br/cotacao/cotacao-dolar')
-            soup = bs(url.text, 'html.parser')
-            dolar = soup.find('div', {'class': 'style__Text-sc-15flwue-2 cSuXFv'}).text[0:4]
-            await ctx.send(f"Um dólar custa R${dolar} ")
+            dolar = self.get_price('USD')
+            await ctx.send(f"DÓLAR -> R${dolar}")
         except Exception as e:
             await ctx.send("Ops... Erro detectado!")
             print(e)
 
-    @commands.command(help="Verifica a cotação atual do Euro em reais. (Não requer argumentos)")
+    @commands.command(name="euro", help="Verifica a cotação atual do Euro em reais. (Não requer argumentos), aliases = ['Euro']")
     async def euro(self, ctx):
         try:
-            url = requests.get('https://www.remessaonline.com.br/cotacao/cotacao-euro')
-            soup = bs(url.text, 'html.parser')
-            euro = soup.find('div', {'class': 'style__Text-sc-15flwue-2 cSuXFv'}).text[0:4]
-            await ctx.send(f"Um euro custa R${euro} ")
+            euro = self.get_price('EUR')
+            await ctx.send(f"EURO -> R${euro}")
         except Exception as e:
             await ctx.send("Ops... Erro detectado!")
             print(e)
